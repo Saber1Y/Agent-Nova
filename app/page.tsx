@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import TokenCard from '@/components/TokenCard'
 import TokenTable from '@/components/TokenTable'
 import AIInsight from '@/components/AIInsight'
@@ -284,18 +284,11 @@ export default function Home() {
           </motion.section>
 
           {/* Analysis Result */}
-          <AnimatePresence>
-            {analysis && (
-              <motion.section
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -30 }}
-                transition={{ duration: 0.5 }}
-              >
-                <AIInsight token={analysis.token} analysis={analysis.analysis} />
-              </motion.section>
-            )}
-          </AnimatePresence>
+          {analysis && (
+            <section className="mt-12 animate-slide-up">
+              <AIInsight token={analysis.token} analysis={analysis.analysis} />
+            </section>
+          )}
         </div>
 
         {/* Footer */}
