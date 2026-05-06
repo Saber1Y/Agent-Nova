@@ -2,8 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-gray-50 text-gray-900;
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-slate-50 via-white to-blue-50 min-h-screen text-gray-900;
+  }
+  
+  .dark body {
+    @apply bg-gradient-to-br from-slate-950 via-gray-900 to-slate-900 text-gray-100;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/80 backdrop-blur-lg border border-white/20 shadow-xl;
+  }
+  
+  .dark .glass {
+    @apply bg-gray-900/80 border-gray-700/50;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-nova-600 via-blue-600 to-purple-600 bg-clip-text text-transparent bg-300% animate-gradient;
+  }
 }
 
 @layer utilities {
