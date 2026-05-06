@@ -8,10 +8,14 @@ export interface TokenData {
   price: number
   priceChange24h: number
   volume24h: number
+  volume24hUSD?: number
   liquidity: number
   marketCap: number
+  marketcap?: number
   holderCount?: number
   topHolderPercent?: number
+  logoURI?: string
+  rank?: number
 }
 
 export interface TokenSecurity {

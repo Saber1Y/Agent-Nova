@@ -193,7 +193,7 @@ export default function Home() {
                   </div>
                   <div className="bg-blue-50 rounded-lg p-4">
                     <p className="text-gray-700 text-sm italic">
-                      "Strong momentum with {(token.volume24h || token.volume24hUSD || 0) > 1000000 ? 'high' : 'moderate'} volume suggests {(token.priceChange24h || 0) > 50 ? 'strong' : 'growing'} market interest."
+                      "Strong momentum with {(token.volume24h || 0) > 1000000 ? 'high' : 'moderate'} volume suggests {(token.priceChange24h || 0) > 50 ? 'strong' : 'growing'} market interest."
                     </p>
                   </div>
                 </div>

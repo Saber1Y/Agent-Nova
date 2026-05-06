@@ -36,9 +36,9 @@ export async function POST(request: Request) {
       symbol: token.symbol,
       price: token.price,
       priceChange24h: token.priceChange24h || 0,
-      volume24h: token.volume24h || token.volume24hUSD || 0,
+      volume24h: token.volume24h || 0,
       liquidity: token.liquidity || 0,
-      marketCap: token.marketCap || token.marketcap || 0,
+      marketCap: token.marketCap || 0,
     })
 
     return NextResponse.json({ token, analysis })
