@@ -1,5 +1,4 @@
 import { Shield, AlertTriangle, AlertCircle, TrendingUp, TrendingDown, Clock } from 'lucide-react'
-import { motion } from 'framer-motion'
 
 interface AnalysisData {
   risk: string
@@ -31,16 +30,12 @@ export default function AIInsight({ analysis, token }: AIInsightProps) {
   if (!analysis || !token) {
     return null
   }
+
   const priceChange = token?.priceChange24h ?? 0
   const isPositive = priceChange > 0
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm"
-    >
+    <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold">{token?.name} ({token?.symbol})</h2>
@@ -91,7 +86,6 @@ export default function AIInsight({ analysis, token }: AIInsightProps) {
           Real-time analysis
         </span>
       </div>
-      </div>
-    </motion.div>
+    </div>
   )
 }
