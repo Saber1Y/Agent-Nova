@@ -36,6 +36,8 @@ async function fetchBirdeye<T>(endpoint: string, params?: Record<string, string>
     })
   }
 
+  console.log('Fetching Birdeye:', url.toString())
+  
   const response = await fetch(url.toString(), {
     headers: {
       'X-API-KEY': BIRDEYE_API_KEY,
@@ -43,27 +45,33 @@ async function fetchBirdeye<T>(endpoint: string, params?: Record<string, string>
     },
   })
 
+  console.log('Birdeye response status:', response.status)
+  
   if (!response.ok) {
+    const text = await response.text()
+    console.error('Birdeye error response:', text)
     throw new Error(`Birdeye API error: ${response.statusText}`)
   }
 
-  return response.json()
+  const data = await response.json()
+  console.log('Birdeye data received:', JSON.stringify(data).slice(0, 200))
+  return data
 }
 
 export async function getNewListings(): Promise<TokenData[]> {
-  const data = await fetchBirdeye<{ tokens: TokenData[] }>('/v2/tokens/new_listing', {
+  const data = await fetchBirdeye<{ data: { tokens?: TokenData[] } }>('/v2/tokens/new_listing', {
     limit: '20',
     sort_by: 'created_at',
     sort_type: 'desc',
   })
-  return data.tokens || []
+  return data.data?.tokens || []
 }
 
 export async function getTrendingTokens(): Promise<TokenData[]> {
-  const data = await fetchBirdeye<{ tokens: TokenData[] }>('/defi/token_trending', {
+  const data = await fetchBirdeye<{ data: { tokens?: TokenData[] } }>('/defi/token_trending', {
     limit: '20',
   })
-  return data.tokens || []
+  return data.data?.tokens || []
 }
 
 export async function getTokenSecurity(address: string): Promise<TokenSecurity> {

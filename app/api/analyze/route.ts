@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getTokenDetails, getTokenSecurity } from '@/lib/birdeye'
+import { getTrendingTokens, getNewListings } from '@/lib/birdeye'
 import { analyzeToken } from '@/lib/ai'
 
 export async function POST(request: Request) {
@@ -13,27 +13,40 @@ export async function POST(request: Request) {
       )
     }
 
-    const [token, security] = await Promise.all([
-      getTokenDetails(address),
-      getTokenSecurity(address).catch(() => null),
+    // Search in free endpoints (trending + new listings)
+    const [trending, newListings] = await Promise.all([
+      getTrendingTokens(),
+      getNewListings().catch(() => []),
     ])
+
+    const allTokens = [...trending, ...newListings]
+    const token = allTokens.find(t => 
+      t.address.toLowerCase() === address.toLowerCase()
+    )
+
+    if (!token) {
+      return NextResponse.json(
+        { error: 'Token not found. Try a trending token address.' },
+        { status: 404 }
+      )
+    }
 
     const analysis = await analyzeToken({
       name: token.name,
       symbol: token.symbol,
       price: token.price,
-      priceChange24h: token.priceChange24h,
-      volume24h: token.volume24h,
-      liquidity: token.liquidity,
-      marketCap: token.marketCap,
-      security: security || undefined,
+      priceChange24h: token.priceChange24h || 0,
+      volume24h: token.volume24h || token.volume24hUSD || 0,
+      liquidity: token.liquidity || 0,
+      marketCap: token.marketCap || token.marketcap || 0,
     })
 
     return NextResponse.json({ token, analysis })
   } catch (error) {
     console.error('Error analyzing token:', error)
+    const message = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json(
-      { error: 'Failed to analyze token' },
+      { error: 'Failed to analyze token', details: message },
       { status: 500 }
     )
   }
