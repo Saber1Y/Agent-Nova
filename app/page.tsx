@@ -35,6 +35,7 @@ interface AnalysisData {
 export default function Home() {
   const [analysis, setAnalysis] = useState<AnalysisData | null>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [analysisError, setAnalysisError] = useState<string | null>(null)
 
   const { data: trendingData, isLoading: trendingLoading } = useQuery({
     queryKey: ['tokens', 'trending'],
@@ -56,6 +57,8 @@ export default function Home() {
 
   const handleAnalyze = async (address: string) => {
     setIsAnalyzing(true)
+    setAnalysisError(null)
+    setAnalysis(null)
     try {
       const res = await fetch('/api/analyze', {
         method: 'POST',
@@ -63,10 +66,14 @@ export default function Home() {
         body: JSON.stringify({ address }),
       })
       const data = await res.json()
-      setAnalysis(data)
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+      if (data.error) {
+        setAnalysisError(data.error)
+      } else {
+        setAnalysis(data)
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+      }
     } catch (error) {
-      console.error('Analysis failed:', error)
+      setAnalysisError('Network error. Make sure your dev server is running on port 3000.')
     } finally {
       setIsAnalyzing(false)
     }
@@ -283,9 +290,19 @@ export default function Home() {
             </motion.div>
           </motion.section>
 
+          {/* Error Display */}
+          {analysisError && (
+            <section className="mt-8">
+              <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center">
+                <p className="text-red-800 font-medium">{analysisError}</p>
+                <p className="text-red-600 text-sm mt-2">Try a token address from the trending list above</p>
+              </div>
+            </section>
+          )}
+
           {/* Analysis Result */}
           {analysis && (
-            <section className="mt-12 animate-slide-up">
+            <section className="mt-8 animate-slide-up">
               <AIInsight token={analysis.token} analysis={analysis.analysis} />
             </section>
           )}
