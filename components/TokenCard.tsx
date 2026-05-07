@@ -1,4 +1,4 @@
-import { TrendingUp, TrendingDown, Shield, AlertTriangle, AlertCircle, BarChart3 } from 'lucide-react'
+
 
 interface TokenData {
   address: string
@@ -27,21 +27,7 @@ interface TokenCardProps {
   onClick?: () => void
 }
 
-const RiskBadge = ({ risk }: { risk: string }) => {
-  const styles = {
-    Low: 'bg-green-100 text-green-800 border-green-200',
-    Medium: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-    High: 'bg-red-100 text-red-800 border-red-200',
-  }
-  const Icon = risk === 'Low' ? Shield : risk === 'Medium' ? AlertTriangle : AlertCircle
 
-  return (
-    <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold border ${styles[risk as keyof typeof styles]}`}>
-      <Icon className="w-3 h-3" />
-      {risk} Risk
-    </span>
-  )
-}
 
 export default function TokenCard({ token, analysis, onClick }: TokenCardProps) {
   const isPositive = (token.priceChange24h || 0) > 0
@@ -80,8 +66,7 @@ export default function TokenCard({ token, analysis, onClick }: TokenCardProps) 
 
         <div className="flex justify-between items-center">
           <span className="text-gray-600 text-sm">24h Change</span>
-          <span className={`font-mono flex items-center gap-1 font-bold ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
-            {isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+          <span className={`font-mono font-bold ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
             {isPositive ? '+' : ''}{(token.priceChange24h || 0).toFixed(2)}%
           </span>
         </div>
@@ -102,8 +87,7 @@ export default function TokenCard({ token, analysis, onClick }: TokenCardProps) 
               <p className="text-sm text-gray-700 italic leading-relaxed">"{analysis.insight}"</p>
             </div>
             <div className="flex justify-between items-center pt-2">
-              <div className="flex items-center gap-2">
-                <BarChart3 className="w-4 h-4 text-nova-600" />
+              <div>
                 <span className="text-sm font-bold text-gray-700">Score: <span className="text-nova-600">{analysis.score}</span>/100</span>
               </div>
               <span className={`text-xs font-bold px-3 py-1 rounded-full ${
