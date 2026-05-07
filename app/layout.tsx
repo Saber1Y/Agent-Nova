@@ -11,6 +11,7 @@ const sora = Sora({
 export const metadata: Metadata = {
   title: 'Agent Nova - AI Crypto Intelligence',
   description: 'Real-time AI-powered token analysis and investment insights',
+  icons: { icon: '/logo.png' },
 }
 
 export default function RootLayout({
