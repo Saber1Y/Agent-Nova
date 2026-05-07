@@ -80,43 +80,46 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
+    <main className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Hero Section */}
         <motion.header 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="mb-16 text-center"
+          className="mb-16 pt-12 text-center"
         >
-          <h1 className="text-6xl md:text-7xl font-black mb-6">
+          <div className="inline-flex px-4 py-1.5 bg-blue-50 border border-blue-100 rounded-full text-sm text-blue-600 font-medium mb-8">
+            AI-Powered Crypto Intelligence
+          </div>
+          <h1 className="text-6xl md:text-7xl font-black mb-6 tracking-tight">
             <span className="gradient-text">Agent Nova</span>
           </h1>
           <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
-            className="text-xl text-gray-600 max-w-3xl mx-auto mb-10 leading-relaxed"
+            className="text-xl text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed"
           >
-            AI-powered crypto intelligence that turns raw data into 
-            <span className="font-bold text-nova-600">actionable decisions</span>
+            Turn raw blockchain data into
+            <span className="font-bold text-blue-600"> actionable investment decisions</span>
           </motion.p>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500"
+            className="flex flex-wrap items-center justify-center gap-3 text-sm text-gray-500"
           >
-            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm">
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            <div className="flex items-center gap-1.5 bg-white border border-gray-100 px-3.5 py-1.5 rounded-full shadow-sm">
+              <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
               <span>Real-time Analysis</span>
             </div>
-            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm">
-              <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+            <div className="flex items-center gap-1.5 bg-white border border-gray-100 px-3.5 py-1.5 rounded-full shadow-sm">
+              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
               <span>AI-Powered Insights</span>
             </div>
-            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm">
-              <span className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
+            <div className="flex items-center gap-1.5 bg-white border border-gray-100 px-3.5 py-1.5 rounded-full shadow-sm">
+              <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span>
               <span>Token Scoring</span>
             </div>
           </motion.div>
