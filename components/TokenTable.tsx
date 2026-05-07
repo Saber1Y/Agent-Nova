@@ -5,6 +5,10 @@ interface TokenTableProps {
   onSelectToken?: (address: string) => void
 }
 
+function fmt(value: number, formatter: (v: number) => string) {
+  return value > 0 ? formatter(value) : '\u2014'
+}
+
 export default function TokenTable({ tokens, onSelectToken }: TokenTableProps) {
   return (
     <div className="overflow-x-auto">
@@ -32,13 +36,13 @@ export default function TokenTable({ tokens, onSelectToken }: TokenTableProps) {
                   <p className="text-gray-500 text-xs">{token.symbol}</p>
                 </div>
               </td>
-              <td className="text-right p-3 font-mono">${token.price.toFixed(6)}</td>
-              <td className={`text-right p-3 font-mono ${token.priceChange24h > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                {token.priceChange24h > 0 ? '+' : ''}{token.priceChange24h.toFixed(2)}%
+              <td className="text-right p-3 font-mono">{fmt(token.price, v => '$' + v.toFixed(6))}</td>
+              <td className={`text-right p-3 font-mono ${token.priceChange24h > 0 ? 'text-green-600' : token.priceChange24h < 0 ? 'text-red-600' : ''}`}>
+                {fmt(token.priceChange24h, v => (v > 0 ? '+' : '') + v.toFixed(2) + '%')}
               </td>
-              <td className="text-right p-3 font-mono">${(token.liquidity / 1000).toFixed(0)}K</td>
-              <td className="text-right p-3 font-mono">${(token.volume24h / 1000000).toFixed(2)}M</td>
-              <td className="text-right p-3 font-mono">${(token.marketCap / 1000000).toFixed(2)}M</td>
+              <td className="text-right p-3 font-mono">{fmt(token.liquidity, v => '$' + (v / 1000).toFixed(0) + 'K')}</td>
+              <td className="text-right p-3 font-mono">{fmt(token.volume24h, v => '$' + (v / 1000000).toFixed(2) + 'M')}</td>
+              <td className="text-right p-3 font-mono">{fmt(token.marketCap, v => '$' + (v / 1000000).toFixed(2) + 'M')}</td>
             </tr>
           ))}
         </tbody>

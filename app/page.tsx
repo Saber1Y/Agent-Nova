@@ -7,6 +7,7 @@ import TokenCard from '@/components/TokenCard'
 import TokenTable from '@/components/TokenTable'
 import AIInsight from '@/components/AIInsight'
 import TokenSearch from '@/components/TokenSearch'
+import TypeWriter from '@/components/TypeWriter'
 
 interface TokenData {
   address: string
@@ -55,15 +56,56 @@ export default function Home() {
     refetchInterval: 30000,
   })
 
+  const findToken = (input: string, tokens: TokenData[]) =>
+    tokens.find(t =>
+      t.address.toLowerCase() === input ||
+      t.symbol.toLowerCase() === input ||
+      t.name.toLowerCase().includes(input)
+    )
+
   const handleAnalyze = async (address: string) => {
     setIsAnalyzing(true)
     setAnalysisError(null)
     setAnalysis(null)
+
+    const input = address.trim().toLowerCase()
+    let token: TokenData | undefined =
+      findToken(input, trendingData?.tokens || []) ||
+      findToken(input, newListingsData?.tokens || [])
+
+    if (!token) {
+      try {
+        const [trendingRes, newRes] = await Promise.all([
+          fetch('/api/tokens?type=trending').then(r => r.json()),
+          fetch('/api/tokens?type=new').then(r => r.json()),
+        ])
+        token =
+          findToken(input, trendingRes.tokens || []) ||
+          findToken(input, newRes.tokens || [])
+      } catch {
+        // fallback failed
+      }
+    }
+
+    if (!token) {
+      setAnalysisError(`Token "${address}" not found in trending or new listings. Try a token address from the list above.`)
+      setIsAnalyzing(false)
+      return
+    }
+
     try {
       const res = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ address }),
+        body: JSON.stringify({
+          name: token.name,
+          symbol: token.symbol,
+          price: token.price,
+          priceChange24h: token.priceChange24h,
+          volume24h: token.volume24h,
+          liquidity: token.liquidity,
+          marketCap: token.marketCap,
+        }),
       })
       const data = await res.json()
       if (data.error) {
@@ -93,7 +135,7 @@ export default function Home() {
             AI-Powered Crypto Intelligence
           </div>
           <h1 className="text-6xl md:text-7xl font-black mb-6 tracking-tight">
-            <span className="gradient-text">Agent Nova</span>
+            <TypeWriter text="Agent Nova" className="gradient-text" />
           </h1>
           <motion.p 
             initial={{ opacity: 0 }}

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Search, Sparkles } from 'lucide-react'
 
 interface TokenSearchProps {
   onAnalyze: (address: string) => void
@@ -20,22 +19,18 @@ export default function TokenSearch({ onAnalyze, isLoading }: TokenSearchProps) 
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
-      <div className="flex items-center gap-3 mb-6">
-        <Sparkles className="w-6 h-6 text-nova-600" />
-        <div>
-          <h2 className="text-2xl font-bold">Ask AI About Any Token</h2>
-          <p className="text-gray-500">Enter a token address for instant AI analysis</p>
-        </div>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold">Ask AI About Any Token</h2>
+        <p className="text-gray-500">Enter a token address for instant AI analysis</p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex gap-3">
         <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            placeholder="Enter token address (e.g., 0x...)"
+            placeholder="Enter token address or symbol (e.g., GIGA)"
             className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-nova-500 focus:border-transparent"
           />
         </div>
